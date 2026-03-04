@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GeoBrawl - Filler</title>
+<title>GeoBrawl - Word Round</title>
 
 <style>
 :root {
@@ -22,11 +22,6 @@ body {
   flex-direction: column;
 }
 
-/* Top spacing similar to homepage */
-.header-space {
-  height: 80px;
-}
-
 /* Main layout */
 .main-container {
   flex: 1;
@@ -36,12 +31,13 @@ body {
   position: relative;
 }
 
-/* Filler word */
+/* Word styling */
 .filler-word {
   font-size: 4rem;
   font-weight: 700;
   color: var(--ocean);
   text-align: center;
+  text-shadow: 0 0 15px rgba(74,144,214,0.4);
 }
 
 /* Buttons */
@@ -64,7 +60,6 @@ body {
   transform: translateY(-50%) translateY(-2px);
 }
 
-/* Left and Right positioning */
 .skip {
   left: 40px;
 }
@@ -77,15 +72,51 @@ body {
 
 <body>
 
-<div class="header-space"></div>
-
 <div class="main-container">
-  <a href="#" class="side-button skip">Skip</a>
+  <button class="side-button skip" onclick="newWord()">Skip</button>
 
-  <div class="filler-word">FILLER</div>
+  <div class="filler-word" id="wordDisplay"></div>
 
-  <a href="#" class="side-button right">Right</a>
+  <button class="side-button right" onclick="newWord()">Right</button>
 </div>
+
+<script>
+const words = [
+  "Lion",
+  "Bigfoot",
+  "Monkey",
+  "Donkey",
+  "Capybara",
+  "Squank",
+  "Walrus",
+  "Wolf",
+  "Tiger",
+  "Alien",
+  "Anna",
+  "Desiree",
+  "Caden",
+  "Alexis",
+  "Beetle",
+  "Butterfly",
+  "Firefly",
+  "Pigeon",
+  "Water Buffalo",
+  "Manatee",
+  "Blue Whale",
+  "Platypus",
+  "Beaver",
+  "Kangaroo",
+  "Snow Leopard"
+];
+
+function newWord() {
+  const randomIndex = Math.floor(Math.random() * words.length);
+  document.getElementById("wordDisplay").textContent = words[randomIndex];
+}
+
+// Generate a word on page load
+newWord();
+</script>
 
 </body>
 </html>
