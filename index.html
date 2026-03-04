@@ -18,6 +18,15 @@ body {
   color: white;
 }
 
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .container {
   width: 100%;
   flex: 1;
@@ -52,6 +61,12 @@ button {
   color: white;
 }
 
+.new-round {
+  background: #3b82f6;
+  color: white;
+  display: none;
+}
+
 .score {
   margin-bottom: 30px;
   font-size: 22px;
@@ -61,7 +76,12 @@ button {
 </head>
 <body>
 
-<div class="container">
+<div class="top-bar">
+  <div>Time: <span id="timer">60</span>s</div>
+  <div>Points: <span id="score">0</span></div>
+</div>
+
+<div class="container" id="gameArea">
   <button class="skip" onclick="skipWord()">Skip</button>
 
   <div class="word" id="wordDisplay"></div>
@@ -69,9 +89,9 @@ button {
   <button class="right" onclick="correctWord()">Right</button>
 </div>
 
-<div class="score">
-  Points: <span id="score">0</span>
-</div>
+<button class="new-round" id="newRoundBtn" onclick="startGame()">
+  New Round
+</button>
 
 <script>
 const words = [
@@ -82,12 +102,15 @@ const words = [
   "Platypus","Beaver","Kangaroo","Snow Leopard"
 ];
 
-let remainingWords = [...words];
+let remainingWords = [];
 let score = 0;
+let timeLeft = 60;
+let timerInterval = null;
+let gameActive = false;
 
 function nextWord() {
   if (remainingWords.length === 0) {
-    remainingWords = [...words]; // reset list
+    remainingWords = [...words];
   }
 
   const index = Math.floor(Math.random() * remainingWords.length);
@@ -96,18 +119,53 @@ function nextWord() {
 }
 
 function correctWord() {
+  if (!gameActive) return;
   score++;
   document.getElementById("score").textContent = score;
   nextWord();
 }
 
 function skipWord() {
+  if (!gameActive) return;
   nextWord();
 }
 
-// Show first word on load
-nextWord();
+function startGame() {
+  score = 0;
+  timeLeft = 60;
+  remainingWords = [...words];
+  gameActive = true;
+
+  document.getElementById("score").textContent = score;
+  document.getElementById("timer").textContent = timeLeft;
+  document.getElementById("newRoundBtn").style.display = "none";
+  document.getElementById("gameArea").style.display = "flex";
+
+  nextWord();
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+      endGame();
+    }
+  }, 1000);
+}
+
+function endGame() {
+  clearInterval(timerInterval);
+  gameActive = false;
+
+  document.getElementById("gameArea").style.display = "none";
+  document.getElementById("newRoundBtn").style.display = "block";
+}
+
+startGame();
 </script>
 
+</body>
+</html>
 </body>
 </html>
