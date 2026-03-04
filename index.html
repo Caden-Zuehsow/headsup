@@ -3,119 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GeoBrawl - Word Round</title>
+<title>Word Selector</title>
 
 <style>
-:root {
-  --ocean: #4A90D6;
-  --background: #11284B;
-  --button: #4A90D6;
-}
-
 body {
-  font-family: system-ui, Arial, sans-serif;
-  background: var(--background);
   margin: 0;
-  color: #E8E8E8;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Main layout */
-.main-container {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-}
-
-/* Word styling */
-.filler-word {
-  font-size: 4rem;
-  font-weight: 700;
-  color: var(--ocean);
-  text-align: center;
-  text-shadow: 0 0 15px rgba(74,144,214,0.4);
-}
-
-/* Buttons */
-.side-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--button);
+  font-family: Arial, sans-serif;
+  background: #1f2937;
   color: white;
-  padding: 14px 24px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: 600;
-  transition: 0.2s;
 }
 
-.side-button:hover {
-  background: #2f6cb0;
-  transform: translateY(-50%) translateY(-2px);
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+}
+
+.word {
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
 }
 
 .skip {
-  left: 40px;
+  background: #555;
+  color: white;
 }
 
 .right {
-  right: 40px;
+  background: #22c55e;
+  color: white;
 }
 </style>
 </head>
-
 <body>
 
-<div class="main-container">
-  <button class="side-button skip" onclick="newWord()">Skip</button>
+<div class="container">
+  <button class="skip">Skip</button>
 
-  <div class="filler-word" id="wordDisplay"></div>
+  <div class="word" id="wordDisplay"></div>
 
-  <button class="side-button right" onclick="newWord()">Right</button>
+  <button class="right" onclick="nextWord()">Right</button>
 </div>
 
 <script>
 const words = [
-  "Lion",
-  "Bigfoot",
-  "Monkey",
-  "Donkey",
-  "Capybara",
-  "Squank",
-  "Walrus",
-  "Wolf",
-  "Tiger",
-  "Alien",
-  "Anna",
-  "Desiree",
-  "Caden",
-  "Alexis",
-  "Beetle",
-  "Butterfly",
-  "Firefly",
-  "Pigeon",
-  "Water Buffalo",
-  "Manatee",
-  "Blue Whale",
-  "Platypus",
-  "Beaver",
-  "Kangaroo",
-  "Snow Leopard"
+  "Lion","Bigfoot","Monkey","Donkey","Capybara","Squank",
+  "Walrus","Wolf","Tiger","Alien","Anna","Desiree",
+  "Caden","Alexis","Beetle","Butterfly","Firefly",
+  "Pigeon","Water Buffalo","Manatee","Blue Whale",
+  "Platypus","Beaver","Kangaroo","Snow Leopard"
 ];
 
-function newWord() {
-  const randomIndex = Math.floor(Math.random() * words.length);
-  document.getElementById("wordDisplay").textContent = words[randomIndex];
+let remainingWords = [...words];
+
+function nextWord() {
+  if (remainingWords.length === 0) {
+    remainingWords = [...words]; // reset when all used
+  }
+
+  const index = Math.floor(Math.random() * remainingWords.length);
+  document.getElementById("wordDisplay").textContent = remainingWords[index];
+
+  remainingWords.splice(index, 1); // remove so it doesn't repeat
 }
 
-// Generate a word on page load
-newWord();
+// Show first word on load
+nextWord();
 </script>
 
 </body>
