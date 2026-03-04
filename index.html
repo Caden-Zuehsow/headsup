@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Word Selector</title>
+<title>Word Game</title>
 
 <style>
 body {
   margin: 0;
   height: 100vh;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
   font-family: Arial, sans-serif;
   background: #1f2937;
   color: white;
@@ -19,6 +20,7 @@ body {
 
 .container {
   width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,16 +51,26 @@ button {
   background: #22c55e;
   color: white;
 }
+
+.score {
+  margin-bottom: 30px;
+  font-size: 22px;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
-  <button class="skip">Skip</button>
+  <button class="skip" onclick="skipWord()">Skip</button>
 
   <div class="word" id="wordDisplay"></div>
 
-  <button class="right" onclick="nextWord()">Right</button>
+  <button class="right" onclick="correctWord()">Right</button>
+</div>
+
+<div class="score">
+  Points: <span id="score">0</span>
 </div>
 
 <script>
@@ -71,16 +83,26 @@ const words = [
 ];
 
 let remainingWords = [...words];
+let score = 0;
 
 function nextWord() {
   if (remainingWords.length === 0) {
-    remainingWords = [...words]; // reset when all used
+    remainingWords = [...words]; // reset list
   }
 
   const index = Math.floor(Math.random() * remainingWords.length);
   document.getElementById("wordDisplay").textContent = remainingWords[index];
+  remainingWords.splice(index, 1);
+}
 
-  remainingWords.splice(index, 1); // remove so it doesn't repeat
+function correctWord() {
+  score++;
+  document.getElementById("score").textContent = score;
+  nextWord();
+}
+
+function skipWord() {
+  nextWord();
 }
 
 // Show first word on load
